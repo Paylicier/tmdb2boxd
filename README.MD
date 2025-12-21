@@ -11,6 +11,8 @@
 <div align="center">
 <br>
 
+  <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/2983f06abb4da770_tmdb2boxdlogo.png" alt="TMDB2BOXD Logo" width="400"/>
+
   # TMDB2BOXD
   
   A Cloudflare Worker to get the Letterboxd ID of a movie from its TMDB ID
@@ -20,7 +22,7 @@
   ![License](https://img.shields.io/badge/License-MIT-orange)
 </div>
 
-## API Usage 🚀
+## API Usage 
 
 ### Endpoint
 
@@ -61,7 +63,7 @@ GET /tmdb/:id
 curl https://boxd.notri1.fr/tmdb/603
 ```
 
-## Setup 🛠️
+## Setup 
 
 ### Prerequisites
 
