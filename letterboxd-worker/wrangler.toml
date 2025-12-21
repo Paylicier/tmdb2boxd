@@ -1,0 +1,3 @@
+name = "tmdb2boxd-worker"
+main = "src/main.ts"
+compatibility_date = "2025-07-18"
