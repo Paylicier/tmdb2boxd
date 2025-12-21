@@ -104,7 +104,7 @@ curl https://boxd.notri1.fr/tmdb/603
 
 This project is available under **MIT**
 
-Please the license carefully before using this software. If you have any questions about licensing, please open an issue.
+Please read the license carefully before using this software. If you have any questions about licensing, please open an issue.
 
 ---
 
