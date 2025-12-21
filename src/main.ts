@@ -16,6 +16,10 @@ interface LetterboxdData {
     tmdbId: string;
 }
 
+export interface Env {
+    TMDB2BOXD_KV: KVNamespace;
+}
+
 async function fetchLetterboxdData(tmdbId: string): Promise<LetterboxdData | null> {
     const letterboxdUrl = `https://letterboxd.com/tmdb/${tmdbId}`;
 
@@ -61,7 +65,7 @@ async function fetchLetterboxdData(tmdbId: string): Promise<LetterboxdData | nul
 }
 
 export default {
-    async fetch(request: Request, ctx: ExecutionContext): Promise<Response> {
+    async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
         const url = new URL(request.url);
         const path = url.pathname;
 
@@ -98,8 +102,16 @@ export default {
         }
 
         const tmdbId = tmdbMatch[1];
-        const data = await fetchLetterboxdData(tmdbId);
 
+        let data: LetterboxdData | null = await env.TMDB2BOXD_KV.get(`tmdb_${tmdbId}`, { type: 'json' });
+
+        if (!data) {
+            data = await fetchLetterboxdData(tmdbId);
+            if (data) {
+                await env.TMDB2BOXD_KV.put(`tmdb_${tmdbId}`, JSON.stringify(data), { expirationTtl: 604800 }); // 7 days
+            }
+        }
+            
         if (!data) {
             return new Response(
                 JSON.stringify({ error: 'Movie not found on Letterboxd', tmdbId }),
