@@ -11,7 +11,7 @@
 <div align="center">
 <br>
 
-  <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/2983f06abb4da770_tmdb2boxdlogo.png" alt="TMDB2BOXD Logo" width="400"/>
+  <img src="https://user-cdn.hackclub-assets.com/019c256d-d7e7-7f34-b9b0-ebc80198a1de/tmdb2boxdlogo.png" alt="TMDB2BOXD Logo" width="400"/>
 
   # TMDB2BOXD
   
