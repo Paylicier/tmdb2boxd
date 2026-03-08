@@ -23,21 +23,26 @@ export interface Env {
 async function fetchLetterboxdData(tmdbId: string): Promise<LetterboxdData | null> {
     const letterboxdUrl = `https://letterboxd.com/tmdb/${tmdbId}`;
 
-    const response = await fetch(letterboxdUrl, {
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-        },
-        redirect: 'follow',
+const response = await fetch(letterboxdUrl, {
+      method: 'GET',
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)", // Spoofing discord's UA to bypass WAF :)
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"
+      }
     });
 
     if (!response.ok) {
+        console.error(`Failed to fetch Letterboxd page for TMDB ID ${tmdbId}, status: ${response.status}`);
+        console.log(await response.text())
         return null;
     }
 
     const html = await response.text();
     const finalUrl = response.url;
+
+    console.log(`Fetched Letterboxd page for TMDB ID ${tmdbId}, final URL: ${finalUrl}`);
+    console.log(`HTML length: ${html}`);
 
     const letterboxdIdMatch = html.match(/boxd\.it\/([a-zA-Z0-9]+)/); //boxd.it/XXXX
     const letterboxdId = letterboxdIdMatch ? letterboxdIdMatch[1] : null;
@@ -104,6 +109,7 @@ export default {
         const tmdbId = tmdbMatch[1];
 
         let data: LetterboxdData | null = await env.TMDB2BOXD_KV.get(`tmdb_${tmdbId}`, { type: 'json' });
+        console.log(`Cache lookup for TMDB ID ${tmdbId}: ${data ? 'HIT' : 'MISS'}`);
 
         if (!data) {
             data = await fetchLetterboxdData(tmdbId);
