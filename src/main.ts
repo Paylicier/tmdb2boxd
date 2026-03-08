@@ -34,15 +34,11 @@ const response = await fetch(letterboxdUrl, {
 
     if (!response.ok) {
         console.error(`Failed to fetch Letterboxd page for TMDB ID ${tmdbId}, status: ${response.status}`);
-        console.log(await response.text())
         return null;
     }
 
     const html = await response.text();
     const finalUrl = response.url;
-
-    console.log(`Fetched Letterboxd page for TMDB ID ${tmdbId}, final URL: ${finalUrl}`);
-    console.log(`HTML length: ${html}`);
 
     const letterboxdIdMatch = html.match(/boxd\.it\/([a-zA-Z0-9]+)/); //boxd.it/XXXX
     const letterboxdId = letterboxdIdMatch ? letterboxdIdMatch[1] : null;
@@ -109,7 +105,6 @@ export default {
         const tmdbId = tmdbMatch[1];
 
         let data: LetterboxdData | null = await env.TMDB2BOXD_KV.get(`tmdb_${tmdbId}`, { type: 'json' });
-        console.log(`Cache lookup for TMDB ID ${tmdbId}: ${data ? 'HIT' : 'MISS'}`);
 
         if (!data) {
             data = await fetchLetterboxdData(tmdbId);
